@@ -22,7 +22,7 @@ LOGS_FILE="$LOGS_FOLDER/$SCRIPT_NAME.log"
 mkdir -p $LOGS_FOLDER
 echo "script execution started at : $(date)" | tee -a $LOGS_FILE
 
-
+USERID=$(id -u)
 if [ "$USERID" -ne 0 ]; then
     echo "Error: Please run this script as root user or using sudo."
     exit 1 # failure is indicated by non-zero exit status
