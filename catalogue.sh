@@ -58,6 +58,9 @@ id robodshop &>> $LOGS_FILE
 if [ $? -ne 0 ]; then
 useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>> $LOGS_FILE
 VALIDATE $? "creating system user"
+else
+    echo -e "roboshop user is already present .... $Y skipped $N" | tee -a $LOGS_FILE
+fi
 
 mkdir -p /app
 VALIDATE $? "Creating Application Directory"
@@ -82,16 +85,15 @@ VALIDATE $? "Copying Catalogue Service File"
 
 
 systemctl daemon-reload
-VALIDATE $? "Reloading SystemD Daemon"
-
-systemctl enable catalogue
+systemctl enable catalogue &>> $LOGS_FILE
 VALIDATE $? "Enabling Catalogue Service"
 
 cp mongodb.repo /etc/yum.repos.d/mongodb.repo
 VALIDATE $? " Adding Mongodb Repo"
 
-dnf install mongodb-mongosh -y
+dnf install mongodb-mongosh -y &>> $LOGS_FILE
 VALIDATE $? "Installing Mongodb Shell Client"
+
 INDEX=$(mongosh mongodb.daws86s.me --quiet --eval "db.getMongo().getDBNames().indexOf('catalogue')" )
 if [ $INDEX -le 0 ]; then
     mongosh --host $MONGODB_HOST </app/db/master-data.js &>> $LOGS_FILE
@@ -99,8 +101,6 @@ if [ $INDEX -le 0 ]; then
 else
     echo -e "Catalogue Schema is already present in Mongodb .... $Y skipped $N" | tee -a $LOGS_FILE
 fi
-mongosh --host $MONGODB_HOST </app/db/master-data.js
-VALIDATE $? "Loading Catalogue Schema to Mongodb"
 
 systemctl restart catalogue
 VALIDATE $? "Restarting Catalogue Service"
