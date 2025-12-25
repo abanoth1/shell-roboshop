@@ -46,19 +46,19 @@ VALIDATE() {
 dnf module disable nodejs -y &>> $LOGS_FILE
 VALIDATE $? "Disabling Nodejs Module"
 
-dnf module enable nodejs:20 -y &>>$LOGS_FILE
+dnf module enable nodejs:20 -y &>> $LOGS_FILE
 VALIDATE $? "Enabling Nodejs:20"
 
-dnf install nodejs -y &>>$LOGS_FILE
+dnf install nodejs -y &>> $LOGS_FILE
 VALIDATE $? " Installing Nodejs"
 
-useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>>$LOGS_FILE
+useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>> $LOGS_FILE
 VALIDATE $? "creating system user"
 
-mkdir /app
+mkdir -p /app
 VALIDATE $? "Creating Application Directory"
 
-curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue.zip &>>$LOGS_FILE
+curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue.zip &>> $LOGS_FILE
 VALIDATE $? "Downloading Catalogue App Content"
 
 cd /app
@@ -67,7 +67,7 @@ VALIDATE $? "Changing Directory to /app"
 unzip /tmp/catalogue.zip &>> $LOGS_FILE
 VALIDATE $? "Extracting Catalogue App Content"
 
-npm install
+npm install &>> $LOGS_FILE
 VALIDATE $? "Installing Nodejs Dependencies"
 
 cp catalogue.service /etc/systemd/system/catalogue.service
@@ -75,6 +75,7 @@ VALIDATE $? "Copying Catalogue Service File"
 
 
 systemctl daemon-reload
+VALIDATE $? "Reloading SystemD Daemon"
 
 systemctl enable catalogue
 VALIDATE $? "Enabling Catalogue Service"
