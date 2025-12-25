@@ -54,7 +54,7 @@ VALIDATE $? " Installing Nodejs"
 
 # check if the roboshop user is present, if not create the user, unfornately the useradd command throws error if the user is already present
 # i forgot to declare id and log file redirection
-id robodshop &>> $LOGS_FILE 
+id roboshop &>> $LOGS_FILE 
 if [ $? -ne 0 ]; then
 useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>> $LOGS_FILE
 VALIDATE $? "creating system user"
