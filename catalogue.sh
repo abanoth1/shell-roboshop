@@ -52,6 +52,10 @@ VALIDATE $? "Enabling Nodejs:20"
 dnf install nodejs -y &>> $LOGS_FILE
 VALIDATE $? " Installing Nodejs"
 
+# check if the roboshop user is present, if not create the user, unfornately the useradd command throws error if the user is already present
+# i forgot to declare id and log file redirection
+id robodshop &>> $LOGS_FILE 
+if [ $? -ne 0 ]; then
 useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>> $LOGS_FILE
 VALIDATE $? "creating system user"
 
@@ -63,6 +67,9 @@ VALIDATE $? "Downloading Catalogue App Content"
 
 cd /app
 VALIDATE $? "Changing Directory to /app"
+
+rm -rf /app/* # remove old content if any
+VALIDATE $? "Removing Old Content"
 
 unzip /tmp/catalogue.zip &>> $LOGS_FILE
 VALIDATE $? "Extracting Catalogue App Content"
