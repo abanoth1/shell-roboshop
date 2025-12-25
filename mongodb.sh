@@ -1,5 +1,6 @@
 #!/bin/bash
 # WORKING WITH COLORS IN SHELL SCRIPTING AND ADDING COLORS TO OUTPUT  AND ALSO USING FUNCTIONS AND LOOPS
+# THIS SCRIPT IS TO INSTALL MONGODB DATABASE
 
 R='\e[31m' # RED COLOR
 G='\e[32m' # GREEN COLOR
@@ -50,6 +51,8 @@ VALIDATE $? "Mongodb Enable"
 systemctl start mongod &>> $LOGS_FILE
 VALIDATE $? "Mongodb Start"
 
+# Here i'm using the sed command to replace the bindIp value from
+# 127.0.0.1 to 0.0.0.0 in the mongod.conf file
 sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mongod.conf
 VALIDATE $? "Allowing remote connections in Mongodb"
 
