@@ -18,7 +18,7 @@ LOGS_FILE="$LOGS_FOLDER/$SCRIPT_NAME.log"
 mkdir -p $LOGS_FOLDER
 echo "script execution started at : $(date)" | tee -a $LOGS_FILE
 
-USERID=$(id -u)
+
 if [ "$USERID" -ne 0 ]; then
     echo "Error: Please run this script as root user or using sudo."
     exit 1 # failure is indicated by non-zero exit status
@@ -26,10 +26,10 @@ fi
 
 VALIDATE() {
     if [ $1 -ne 0 ]; then
-        echo -e "$2 .... $R failure $N"
+        echo -e "$2 .... $R failure $N" | tee -a $LOGS_FILE
         exit 1
     else
-        echo -e "$2 .... $G success $N"
+        echo -e "$2 .... $G success $N" | tee -a $LOGS_FILE
 
         # HERE $1 is the exit status of the last executed command
         # and $2 is the name of the package
@@ -38,26 +38,11 @@ VALIDATE() {
     fi
 }
 
-# $@ is used to get all the arguments passed to the script
-for PACKAGE in "$@"
-do
- # Check if package is installed
- dnf list installed $PACKAGE &>> $LOGS_FILE
-
- # if the exit status is not zero then install the package, else skip the installation
- if [ $? -ne 0 ]; then
-     dnf install $PACKAGE -y &>> $LOGS_FILE
-     VALIDATE $? "$PACKAGE"
-else
-    echo -e "$PACKAGE is already installed .... $Y skipped $N"
-fi
-done
-
 cp mongodb.repo /etc/yum.repos.d/mongodb.repo
-VALIDATE $? "Mongodb Repo"
+VALIDATE $? " Adding Mongodb Repo"
 
 dnf install mongodb-org -y &>> $LOGS_FILE
-VALIDATE $? "Mongodb"
+VALIDATE $? "installing Mongodb"
 
 systemctl enable mongod &>> $LOGS_FILE
 VALIDATE $? "Mongodb Enable"
