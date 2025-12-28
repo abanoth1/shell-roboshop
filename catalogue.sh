@@ -80,7 +80,7 @@ VALIDATE $? "Extracting Catalogue App Content"
 npm install &>> $LOGS_FILE
 VALIDATE $? "Installing Nodejs Dependencies"
 
-cp catalogue.service /etc/systemd/system/catalogue.service
+cp $SCRIPT_DIR/catalogue.service /etc/systemd/system/catalogue.service
 VALIDATE $? "Copying Catalogue Service File"
 
 
@@ -88,8 +88,8 @@ systemctl daemon-reload
 systemctl enable catalogue &>> $LOGS_FILE
 VALIDATE $? "Enabling Catalogue Service"
 
-cp mongodb.repo /etc/yum.repos.d/mongodb.repo
-VALIDATE $? " Adding Mongodb Repo"
+cp $SCRIPT_DIR/mongo.repo /etc/yum.repos.d/mongo.repo
+VALIDATE $? "Copy mongo repo"
 
 dnf install mongodb-mongosh -y &>> $LOGS_FILE
 VALIDATE $? "Installing Mongodb Shell Client"
