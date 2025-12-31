@@ -39,7 +39,6 @@ fi
         # and $2 is the name of the package
         # addingn colors to the output
         # adding loops to install multiple packages
-    fi
 
 # nodejs installation steps
 dnf module disable nodejs -y &>> $LOGS_FILE
