@@ -58,3 +58,4 @@ VALIDATE $? "Allowing remote connections in Mongodb"
 
 systemctl restart mongod &>> $LOGS_FILE
 VALIDATE $? "Restarting Mongodb"
+# Mongodb is installed and configured to allow remote connections
