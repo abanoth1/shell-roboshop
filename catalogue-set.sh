@@ -8,7 +8,6 @@ trap 'echo "There is an error in $LINENO, Command is: $BASH_COMMAND"' ERR
 # The above trap will catch errors and print the line number and command that caused the error
 # This is useful for debugging
 
-
 R='\e[31m' # RED COLOR
 G='\e[32m' # GREEN COLOR
 Y='\e[33m' # YELLOW COLOR
@@ -47,7 +46,6 @@ dnf install nodejs -y &>> $LOGS_FILE
 echo -e " Installing Nodejs .... $G success $N"
 # -e enables interpretation of backslash escapes
 
-
 # check if the roboshop user is present, if not create the user, unfornately the useradd command throws error if the user is already present
 # i forgot to declare id and log file redirection
 
@@ -61,14 +59,11 @@ fi
 
 mkdir -p /app
 
-
 curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue.zip &>> $LOGS_FILE
 
 
 cd /app
-
 rm -rf /app/* # remove old content if any
-
 unzip /tmp/catalogue.zip &>> $LOGS_FILE
 
 
@@ -83,10 +78,8 @@ echo -e "Enabling Catalogue Service .... $G success $N"
 #
 
 cp $SCRIPT_DIR/mongo.repo /etc/yum.repos.d/mongo.repo
-
-
 dnf install mongodb-mongosh -y &>> $LOGS_FILE
-
+echo -e "Installing Mongodb Shell Client .... $G success $N"
 
 INDEX=$(mongosh mongodb.daws86s.me --quiet --eval "db.getMongo().getDBNames().indexOf('catalogue')" )
 if [ $INDEX -le 0 ]; then
@@ -98,7 +91,5 @@ fi
 
 systemctl restart catalogue
 echo -e "Restarting Catalogue Service .... $G success $N"
-
-
 
 ## catalogue service and route 53 record for catalogue is also created by using the aws cli in the shell-scripting 
