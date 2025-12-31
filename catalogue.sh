@@ -54,12 +54,13 @@ VALIDATE $? " Installing Nodejs"
 
 # check if the roboshop user is present, if not create the user, unfornately the useradd command throws error if the user is already present
 # i forgot to declare id and log file redirection
+
 id roboshop &>> $LOGS_FILE 
 if [ $? -ne 0 ]; then
 useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>> $LOGS_FILE
 VALIDATE $? "creating system user"
 else
-    echo -e "roboshop user is already present .... $Y skipped $N" | tee -a $LOGS_FILE
+    echo -e "roboshop user is already present .... $Y skipped $N"
 fi
 
 mkdir -p /app
@@ -99,7 +100,7 @@ if [ $INDEX -le 0 ]; then
     mongosh --host $MONGODB_HOST </app/db/master-data.js &>> $LOGS_FILE
     VALIDATE $? "Loading Catalogue Schema to Mongodb"
 else
-    echo -e "Catalogue Schema is already present in Mongodb .... $Y skipped $N" | tee -a $LOGS_FILE
+    echo -e "Catalogue Schema is already present in Mongodb .... $Y skipped $N"
 fi
 
 systemctl restart catalogue
