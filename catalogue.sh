@@ -105,3 +105,6 @@ fi
 
 systemctl restart catalogue
 VALIDATE $? "Restarting Catalogue Service"
+
+
+## catalogue service and route 53 record for catalogue is also created by using the aws cli in the shell-scripting 
