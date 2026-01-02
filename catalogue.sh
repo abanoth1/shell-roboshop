@@ -15,7 +15,6 @@ LOGS_FOLDER="/var/log/shell-roboshop"
 SCRIPT_NAME=$( echo $0 | cut -d "." -f1 )
 SCRIPT_DIR=$PWD
 MONGODB_HOST="mongodb.daws86s.me"
-
 LOGS_FILE="$LOGS_FOLDER/$SCRIPT_NAME.log"
 # log file path /var/log/shell-roboshop/16-logs.log
 
@@ -28,7 +27,7 @@ if [ "$USERID" -ne 0 ]; then
     exit 1 # failure is indicated by non-zero exit status
 fi
 
-VALIDATE() {
+VALIDATE() {  # function receives the inputs through aruments
     if [ $1 -ne 0 ]; then
         echo -e "$2 .... $R failure $N" | tee -a $LOGS_FILE
         exit 1
@@ -66,7 +65,7 @@ fi
 mkdir -p /app
 VALIDATE $? "Creating Application Directory"
 
-curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue.zip &>> $LOGS_FILE
+curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip &>> $LOGS_FILE
 VALIDATE $? "Downloading Catalogue App Content"
 
 cd /app
@@ -95,7 +94,7 @@ VALIDATE $? "Copy mongo repo"
 dnf install mongodb-mongosh -y &>> $LOGS_FILE
 VALIDATE $? "Installing Mongodb Shell Client"
 
-INDEX=$(mongosh mongodb.daws86s.me --quiet --eval "db.getMongo().getDBNames().indexOf('catalogue')" )
+INDEX=$(mongosh mongodb.daws86s.me --quiet --eval "db.getMongo().getDBNames().indexOf('catalogue')")
 if [ $INDEX -le 0 ]; then
     mongosh --host $MONGODB_HOST </app/db/master-data.js &>> $LOGS_FILE
     VALIDATE $? "Loading Catalogue Schema to Mongodb"
