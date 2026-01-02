@@ -77,7 +77,7 @@ echo -e "Enabling Catalogue Service .... $G success $N"
 #
 
 cp $SCRIPT_DIR/mongo.repo /etc/yum.repos.d/mongo.repo
-dnf install mongodb-mongoshdbbdb -y &>> $LOGS_FILE
+dnf install mongodb-mongosh -y &>> $LOGS_FILE
 echo -e "Installing Mongodb Shell Client .... $G success $N"
 
 INDEX=$(mongosh mongodb.daws86s.me --quiet --eval "db.getMongo().getDBNames().indexOf('catalogue')")
