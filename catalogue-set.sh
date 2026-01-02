@@ -58,8 +58,7 @@ else
 fi
 
 mkdir -p /app
-
-curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue.zip &>> $LOGS_FILE
+curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip &>> $LOGS_FILE
 
 
 cd /app
@@ -78,7 +77,7 @@ echo -e "Enabling Catalogue Service .... $G success $N"
 #
 
 cp $SCRIPT_DIR/mongo.repo /etc/yum.repos.d/mongo.repo
-dnf install mongodb-mongosh -y &>> $LOGS_FILE
+dnf install mongodb-mongoshdbbdb -y &>> $LOGS_FILE
 echo -e "Installing Mongodb Shell Client .... $G success $N"
 
 INDEX=$(mongosh mongodb.daws86s.me --quiet --eval "db.getMongo().getDBNames().indexOf('catalogue')")
