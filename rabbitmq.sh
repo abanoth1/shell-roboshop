@@ -16,6 +16,7 @@ SCRIPT_NAME=$( echo $0 | cut -d "." -f1 )
 SCRIPT_DIR=$PWD
 MONGODB_HOST="mongodb.daws86s.me"
 LOGS_FILE="$LOGS_FOLDER/$SCRIPT_NAME.log"
+START_TIME=$(date +%s)  # to capture script start time
 # log file path /var/log/shell-roboshop/16-logs.log
 
 mkdir -p $LOGS_FOLDER
@@ -59,3 +60,7 @@ VALIDATE $? " Adding RabbitMQ Application User" # adding application user
 rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*" &>> $LOGS_FILE
 VALIDATE $? " Setting RabbitMQ Application User Permissions" # setting application user permissions
 
+END_TIME=$(date +%s)  # to capture script end time
+TOTAL_TIME=$(($END_TIME - $START_TIME))
+echo -e "Total time taken to execute the script: $Y $TOTAL_TIME seconds $N"
+# adding colors and outputting total time taken to execute the script

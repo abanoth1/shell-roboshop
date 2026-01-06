@@ -16,6 +16,7 @@ SCRIPT_NAME=$( echo $0 | cut -d "." -f1 )
 SCRIPT_DIR=$PWD
 MONGODB_HOST="mongodb.daws86s.me"
 LOGS_FILE="$LOGS_FOLDER/$SCRIPT_NAME.log"
+START_TIME=$(date +%s)  # to capture script start time
 # log file path /var/log/shell-roboshop/16-logs.log
 
 mkdir -p $LOGS_FOLDER
@@ -57,3 +58,8 @@ VALIDATE $? "Enabling Redis Service"
 
 systemctl start redis &>> $LOGS_FILE # starting redis service
 VALIDATE $? "Starting Redis Service"
+
+END_TIME=$(date +%s)  # to capture script end time
+TOTAL_TIME=$(($END_TIME - $START_TIME))
+echo -e "Total time taken to execute the script: $Y $TOTAL_TIME seconds $N" 
+#adding colors and outputting total time taken to execute the script
