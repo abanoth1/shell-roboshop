@@ -41,6 +41,10 @@ do
         }
         }]
     }
+
     '
 
 done
+# It will create multiple instances dynamically based on the inputs provided while executing the script and also create route53 records for each instance created.
+# Usage: ./roboshop.sh frontend cart user shipping payment mysql rabbitmq catalogue mongodb
+# Note: Make the script executable using chmod +x roboshop.sh
